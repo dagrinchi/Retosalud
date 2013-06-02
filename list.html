@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang='es'>
+ <head>
+	  <title>jQuery Mobile page</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	  <link rel="stylesheet" href="./themes/retoSalud.css" />
+	 <!--  <link rel="stylesheet" href="./themes/retoSalud.min.css" /> -->
+	  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile.structure-1.3.1.min.css" /> 
+	  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
+	  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script> 	  
+	  <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script> 
+ </head>
+ 
+ <body>
+ 	<div data-role="page"> 
+		<!-- <div data-role="header">
+			<a href="#" data-icon="delete">Cancel</a>
+		    <h1>My App</h1>
+		    <a href="#" data-icon="check">Save</a>
+		</div> 	 -->	
+		<div data-role="content" class="ui-grid-b">
+			 <img src="./themes/images/main.jpg" style=" width: 68%; height: 320px; background-size: 100%;">
+		
+			<div id="list" class="ui-block-a" style="margin-top: 10px">
+				<ul id="appList" data-role="listview" data-filter="true" data-filter-placeholder="Buscar" data-inset="true"></ul>
+			</div>
+
+			<div id="sidebar" class="ui-block-b">
+				<div class="ui-grid-b">
+				    <div class="ui-block-a btn_primario">
+				    	<a href="#" style="background-color: #09c6c9; text-align: center;">
+				    		<span style="display:inline-block; vertical-align:middle">CATEGORIA<br/>DE SALUD<br/></span>
+				    		<img src="./themes/images/health_end.png" width="60px" height="65px">
+				    	</a>
+				    </div>
+				    <div class="ui-block-a btn_primario">
+				    	<a href="#" style="background-color: #e8005d; text-align: center;">
+				    		<span>UBICACIÓN <br/>GEOGRAFICA<br/></span>
+				    		<img src="./themes/images/location_end.png" width="60px" height="65px">
+				    	</a>
+				    	
+				    </div>
+				    <div class="ui-block-a btn_primario">
+				    	<a href="#" style="background-color: #edd200; text-align: center;">
+				    		<span>INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
+				    		<img src="./themes/images/person_end.png" width="60px" height="65px">
+				    	</a>
+				    </div>
+				 </div>
+			</div>
+		</div> 
+		<div data-role="footer" class="ui-bar" data-position="fixed">
+			<a href="#" data-icon="plus">Add</a>
+    		<a href="#" data-icon="arrow-u">Up</a>
+    		<a href="#" data-icon="arrow-d">Down</a>
+		</div> 
+	</div> 
+	<script type="text/javascript">
+	var app = {
+	    
+	    id : "#app",
+
+	    categorias : { data : [], list_id : "#appList" },
+	    
+	    //contacts : { item_id : "#contactItem", item_template_id : "#contactItemTemplate", list_id : "#contactList", data : [], html : [] },
+	    
+	    getJson : function() {
+	        return $.getJSON('http://retosalud.lo/app_dev.php/app.json', function(data){
+	            app.categorias.data = data;
+	        });
+	    },
+
+	    getCategorias : function() {
+    		$.each(app.categorias.data, function(i, item) {
+    			console.log (item);
+				// var categoria = '<h1>'+'TEST'+'</h1>';	            
+	   //          $(app.categorias.list_id).prepend($('<li/>', { html : $('<a/>', { 'data-ajax' : 'false', html : categoria, href : 'javascript:app.getShowContact('+i+');' }) })).listview('refresh');
+	        });
+	    },
+
+	    // getListContact : function() {        
+	    //     $.each(app.contacts.data, function(i, item) {
+	    //         var contact = '<h1>'+item.applicant_name_last_name+'</h1>';
+	    //         if (item.cell_phone) contact += '<p>'+item.cell_phone+'</p>';
+	    //         if (item.email) contact += '<p style="padding-top: 5px;"><strong>'+item.email+'</strong></p>';
+	    //         if (item.created) { 
+	    //             var datestr = item.created.split(/[-T.]/);
+	    //             var safdat = new Date( datestr.slice(0,3).join('/')+' '+datestr[3] );
+	    //             contact += '<p style="float: right;"><strong>'+safdat.toDateString()+'</strong></p>'
+	    //         };
+	    //         $(app.contacts.list_id).prepend($('<li/>', { html : $('<a/>', { 'data-ajax' : 'false', html : contact, href : 'javascript:app.getShowContact('+i+');' }) })).listview('refresh');
+	    //     });
+	    // },
+	    
+	    // getShowContact : function(i) {
+	    //     if (this.contacts.data[i]) {            
+	    //         var contact = this.contacts.data[i];
+	    //         $(this.contacts.item_template_id).tmpl(contact).appendTo(document.body);
+	    //         $.mobile.changePage(this.contacts.item_id+contact.id);
+	    //     }
+	    // },
+	    // keypress : function() {
+	    //     var search = $('input[data-type="search"]');
+	    //     var page = $(app.id);
+	    //     $(document).bind('keypress', function(evt) {
+	    //         if (evt.keyCode == 13) {
+	    //             app.contacts.data = [];
+	    //             app.findJson(search.data().lastval).success(app.getListContact);
+	    //         }
+	    //     });
+	    // },
+	    init: function() {
+        // this.keypress();
+	        // $(document).bind('ajaxSend', function() {
+	        //     $.mobile.loading('show', { text: "Un momento...", textVisible: true, theme: 'e' });
+	        // });
+	        // $(document).bind('ajaxComplete',function() {
+	        //     $.mobile.loading('hide');
+	        // });
+	        this.getJson().success(this.getCategorias);
+	    }
+	}
+	$(document).bind('pageload', function(evt, ui) { 
+	    app.init();
+	    evt.preventDefault();
+	    evt.stopPropagation();
+	}); 
+	</script>
+ </body>
+
+</html>

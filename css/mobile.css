@@ -1,0 +1,136 @@
+/*This class of div will contain the subtab be hidden by default*/
+.content_div {
+    display: none;
+}
+/*This is the default subtab of a tab*/
+.def_content_div {
+    display: block;
+}
+/*This is the leaf div which will contain the form and the fields*/
+.sub_content_div {
+    display: none;
+}
+/*This is the leave div associated with the default subtab*/
+.def_sub_content_div {
+    display: block;
+}
+/*Following commented out as does not work*/
+/*
+.sub_content_div:first-child {
+    display: block;
+}
+
+.content_div:first-child {
+    display: block;
+}
+*/
+.ui-btn {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 0px;
+}
+
+#lns {
+    margin-left: 113px;
+    margin-top: -91px;
+}
+
+
+ul.nav,
+.nav ul{
+
+margin: 0;
+padding: 0;
+cursor: default;
+list-style-type: none;
+}
+
+ul.nav{
+width: 200px;
+float: left;
+margin-right: 1px;
+}
+
+ul.nav a{
+color: #FFF;
+}
+ul.nav a:hover{
+color: #FF0;
+}
+ul.nav>li{
+margin: 0;
+color: #FFF;
+background-color: #900;
+padding-top: 5px;
+padding-right: 6px;
+padding-bottom: 5px;
+padding-left: 6px;
+font-family: Arial, Helvetica, sans-serif;
+}
+ul.nav li>ul>li{
+margin: 0;
+color: #900;
+background-color: #979700;
+padding-top: 5px;
+padding-right: 6px;
+padding-bottom: 5px;
+padding-left: 6px;
+}
+ul.nav li>ul>li a{
+color: #FFF;
+}
+ul.nav li>ul>li a:hover{
+color: #FF0;
+}
+ul.nav li:hover {
+background-color: #000000;
+color: #FF0;
+background-image: url(../images/hover.jpg);
+}
+
+ul.nav li:hover>ul{
+display : block;
+color: #000;
+}
+ul.nav li>ul{
+display: none;
+position: absolute;
+width: 200px;
+left: 200px;
+margin-top: -5px;
+margin-left: 11px;
+color: #FFFF00;
+background-color: #000000;
+}
+
+ul.nav ul>li>ul{
+display: none;
+position: absolute;
+width: 200px;
+left: 191px;
+margin-top: -5px;
+color: #FFFFFF;
+background-color: #333333;
+margin-left: 9px;
+}
+ul.nav ul>li>ul>li{
+margin: 0;
+color: #FFF;
+background-color: #000;
+padding-top: 5px;
+padding-right: 6px;
+padding-bottom: 5px;
+padding-left: 6px;
+}
+ul.nav ul>li>ul>li a{
+color: #FFF;
+}
+ul.nav ul li ul li a:hover {
+color: #FF0;
+}
+ul{
+border: 1px solid #000;
+}
+.nav a{
+text-decoration: none;
+}

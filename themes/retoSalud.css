@@ -19,22 +19,32 @@ body {
 
 .icon_cake {
 	background: url('images/Ponque.png') no-repeat center;
+	background-size: 38px 38px;
+	background-repeat:no-repeat;
 }
 
 .icon_line {
 	background: url('images/Lineal.png') no-repeat center;
+	background-size: 38px 38px;
+	background-repeat:no-repeat;
 }
 
 .icon_bars {
 	background: url('images/Barras.png') no-repeat center;
+	background-size: 38px 38px;
+	background-repeat:no-repeat;
 }
 
 .icon_map {
 	background: url('images/Mapa.png') no-repeat center;
+	background-size: 38px 38px;
+	background-repeat:no-repeat;
 }
 
 .icon_num {
 	background: url('images/Numero.png') no-repeat center;
+	background-size: 38px 38px;
+	background-repeat:no-repeat;
 }
 
 

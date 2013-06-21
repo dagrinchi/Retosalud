@@ -10,117 +10,12 @@
 
 	<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />
 	
-	<script type="text/javascript" src="phonegap.js"></script>
-	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.3.1.min.js"></script>
 	<script type="text/javascript">
-	document.addEventListener("deviceready", app.checkConnection, false);	
 	var app = {
 	    
 	    id : "#app",
-
-	    version : 1.0,
-	    
-	    count : 0,
-    	
-    	data : [],
-
-    	checkConnection : function() {
-	        var networkState = navigator.connection.type;
-	        if (networkState == Connection.NONE || networkState == Connection.UNKNOWN) {
-	        	alert("Error: No hay una conexión a Internet");
-	        } else {
-	        	app.onDeviceReady();
-	        }
-	    },
-
-	    showLoadingBox : function(txt) {
-	    	$.mobile.loading('show', {
-				text: txt,
-				textVisible: true,
-				theme: 'a'
-			});
-	    },
-	    
-	    hideLoadingBox : function() {
-	    	$.mobile.loading('hide');
-	    },
-	    
-	    onDeviceReady : function() {
-	    	this.showLoadingBox("Actualizando repositorio de datos...");
-	    	this.load();
-	    },
-	    
-	    openDB : function() {
-	    	var db = window.openDatabase("saludatos", "1.0", "Saludatos", 209715200);
-	        db.transaction(this.populateDB, this.errorCB, this.successCB);
-	    },
-		
-		populateDB : function(tx) {			
-			var fields = new Array();
-			$.each(this.data[0], function(k, v) {
-				fields.push(k);
-			});
-			var dbFields = fields.join();
-			tx.executeSql('CREATE TABLE IF NOT EXISTS saludatos (' + dbFields + ')');
-			$.each(this.data, function(k1, v1) {
-				var values = new Array();				
-				$.each(v1, function(k2, v2) {
-					values.push(v2);
-				});
-				var dbValues = values.join();
-				tx.executeSql('INSERT INTO saludatos (' + dbFields + ') VALUES (' + dbValues + ')');
-			});			
-        },
-        
-        errorCB : function(tx, err) {        	
-	        alert("Error: "+err);
-	        this.hideLoadingBox();
-	    },
-	    
-	    successCB : function() {
-	    	this.hideLoadingBox();
-	    },	   
-
-	    queryDB : function(tx) {
-        	tx.executeSql('SELECT * FROM saludatos', [], app.querySuccess, app.errorCB);
-    	},
-
-    	querySuccess : function(tx, results) {
-	        console.log("Returned rows = " + results.rows.length);	        
-	        if (!results.rowsAffected) {
-	            console.log('No rows affected!');
-	            return false;
-	        }	        
-	        console.log("Last inserted row ID = " + results.insertId);
-	    },
-    	
-    	load : function() {    		
-    		var url = "//servicedatosabiertoscolombia.cloudapp.net/v1/Ministerio_de_Salud/indicadoresdesalud?$format=json&$filter=id>" + this.count;
-    		var xhr = this.getJson(url);
-			xhr.success(function(r) {								
-				$.each(r.d, function(k, v) {
-					app.data.push(v);
-				});
-				if (r.d.length == 1000) {					
-					app.count = app.count + 1000;					
-					app.load();
-				} else {
-					app.openDB();
-				}				
-			});			
-    	},
-    	
-    	getJson : function(url) {
-    		return $.ajax({
-	        	type: "GET",
-	        	url: document.location.protocol + url,
-	        	dataType: 'jsonp',
-	        	error: function(){
-	            	alert('Error');
-	        	}
-	    	});
-    	},
 
 	    maindata : [],
 
@@ -144,11 +39,11 @@
 
 	    dep : { list_id : "#dep" },
 	    
-	    // getJson : function() {
-	    //     return $.getJSON('http://saludatos.dagrinchi.com/app.json', function(data){
-	    //         app.maindata = data;
-	    //     });
-	    // },
+	    getJson : function() {
+	        return $.getJSON('http://saludatos.dagrinchi.com/app.json', function(data){
+	            app.maindata = data;
+	        });
+	    },
 
 	    setItems : function(data, obj) {
     		$.each(data, function(i, item) {    			    			
@@ -194,10 +89,16 @@
 		app.buttonHeight();
 		// $("#homelogoimg").width($("#homelogo").width() - 10);
 	});
+
+	// $(document).bind('pageinit', function(evt, ui) { 
+	//     app.init();
+	//     evt.preventDefault();
+	//     evt.stopPropagation();
+	// }); 
 	</script>
 </head>
 
-<body>
+<body onload="app.init();">
 
 <div data-role="page" id="home" data-theme="a"> 
 	<div data-role="header" data-position="fixed">
@@ -207,28 +108,28 @@
 	<div data-role="content" class="ui-grid-b">		
 		<div class="list ui-block-a" style="margin-top: 5px; background-color: white !important;">
 			<div id="homelogo" style="width: 350px; display: block; margin: auto;">
-				<img id="homelogoimg" src="./themes/images/main.jpg" style="width: 55%; margin-top: 170px; margin-left: 8px;">
+				<img id="homelogoimg" src="./themes/images/main.jpg" style="width: 70%;">
 			</div>			
 		</div>
 		<div class="sidebar ui-block-b">
 			<div class="ui-grid-b" >
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#categorias" data-transition="slide" data-inline="true" style="background-color: #09c6c9; text-align: center;">
-			    		<span style="font-size: 11px;">CATEGORÍAS<br/>DE SALUD<br/></span>
-			    		<img src="themes/images/health_end.png" width="45px" height="45px">
+			    		<span style="display:inline-block; vertical-align:middle; padding-top: 30px;">CATEGORÍAS<br/>DE SALUD<br/></span>
+			    		<img src="themes/images/health_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#ubicaciones" data-transition="slide" data-inline="true" style="background-color: #e8005d; text-align: center;">
-			    		<span style="font-size: 11px;">UBICACIÓN <br/>GEOGRÁFICA<br/></span>
-			    		<img src="./themes/images/location_end.png" width="40px" height="45px">
+			    		<span>UBICACIÓN <br/>GEOGRÁFICA<br/></span>
+			    		<img src="./themes/images/location_end.png" width="60px" height="65px">
 			    	</a>
 			    	
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#demografia" data-transition="slide" data-inline="true" style="background-color: #edd200; text-align: center;">
-			    		<span style="font-size: 11px;">INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
-			    		<img src="./themes/images/person_end.png" width="40px" height="45px">
+			    		<span>INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
+			    		<img src="./themes/images/person_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			 </div>
@@ -275,21 +176,21 @@
 			<div class="ui-grid-b" >
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#" style="background-color: #09c6c9; text-align: center;">
-			    		<span style="font-size: 11px;">CATEGORÍAS<br/>DE SALUD<br/></span>
-			    		<img src="./themes/images/health_end.png" width="40px" height="41px">
+			    		<span style="display:inline-block; vertical-align:middle">CATEGORÍAS<br/>DE SALUD<br/></span>
+			    		<img src="./themes/images/health_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#ubicaciones" data-transition="slide" data-inline="true" style="background-color: #e8005d; text-align: center;">
-			    		<span style="font-size: 11px;">UBICACIÓN <br/>GEOGRAFICA<br/></span>
-			    		<img src="./themes/images/location_end.png" width="40px" height="41px">
+			    		<span>UBICACIÓN <br/>GEOGRAFICA<br/></span>
+			    		<img src="./themes/images/location_end.png" width="60px" height="65px">
 			    	</a>
 			    	
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#demografia" data-transition="slide" data-inline="true" style="background-color: #edd200; text-align: center;">
-			    		<span style="font-size: 11px;">INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
-			    		<img src="./themes/images/person_end.png" width="40px" height="41px">
+			    		<span>INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
+			    		<img src="./themes/images/person_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			 </div>
@@ -353,21 +254,21 @@
 			<div class="ui-grid-b">
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#categorias" data-transition="slide" data-inline="true" style="background-color: #09c6c9; text-align: center;">
-			    		<span style="font-size: 11px;">CATEGORÍAS<br/>DE SALUD<br/></span>
-			    		<img src="./themes/images/health_end.png" width="40px" height="41px">
+			    		<span style="display:inline-block; vertical-align:middle">CATEGORÍAS<br/>DE SALUD<br/></span>
+			    		<img src="./themes/images/health_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#" style="background-color: #e8005d; text-align: center;">
-			    		<span style="font-size: 11px;">UBICACIÓN <br/>GEOGRAFICA<br/></span>
-			    		<img src="./themes/images/location_end.png" width="40px" height="41px">
+			    		<span>UBICACIÓN <br/>GEOGRAFICA<br/></span>
+			    		<img src="./themes/images/location_end.png" width="60px" height="65px">
 			    	</a>
 			    	
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#demografia" data-transition="slide" data-inline="true" style="background-color: #edd200; text-align: center;">
-			    		<span style="font-size: 11px;">INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
-			    		<img src="./themes/images/person_end.png" width="40px" height="41px">
+			    		<span>INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
+			    		<img src="./themes/images/person_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			 </div>
@@ -442,20 +343,20 @@
 			<div class="ui-grid-b">
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#categorias" data-transition="slide" data-inline="true" style="background-color: #09c6c9; text-align: center;">
-			    	<span style="font-size: 11px;">CATEGORÍAS<br/>DE SALUD<br/></span>
-			    		<img src="./themes/images/health_end.png" width="40px" height="41px">
+			    	<span style="display:inline-block; vertical-align:middle; text: #ffffff; ">CATEGORÍAS<br/>DE SALUD<br/></span>
+			    		<img src="./themes/images/health_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#ubicaciones" data-transition="slide" data-inline="true" style="background-color: #e8005d; text-align: center;">
-			    		<span style="font-size: 11px;">UBICACIÓN <br/>GEOGRAFICA<br/></span>
-			    		<img src="./themes/images/location_end.png" width="40px" height="41px">
+			    		<span>UBICACIÓN <br/>GEOGRAFICA<br/></span>
+			    		<img src="./themes/images/location_end.png" width="60px" height="65px">
 			    	</a>			    	
 			    </div>
 			    <div class="ui-block-a btn_primario">
 			    	<a href="#" style="background-color: #edd200; text-align: center;">
-			    		<span style="font-size: 11px;">INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
-			    		<img src="./themes/images/person_end.png" width="40px" height="41px">
+			    		<span>INFORMACIÓN<br/>DEMOGRÁFIA<br/></span>
+			    		<img src="./themes/images/person_end.png" width="60px" height="65px">
 			    	</a>
 			    </div>
 			 </div>
